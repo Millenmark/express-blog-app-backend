@@ -40,7 +40,7 @@ export const loginUser = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      throw new Error("Email not found");
+      throw new Error("Invalid Email or Password");
     }
 
     if (await user.comparePassword(password)) {
