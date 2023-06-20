@@ -1,10 +1,10 @@
 import { verify } from "jsonwebtoken";
-import User from "../models/User";
+import User from "../models/User.js";
 
 export const authGuard = async (req, res, next) => {
   if (
     req.headers.authorization &&
-    res.headers.authorization.startsWith("Bearer")
+    req.headers.authorization.startsWith("Bearer")
   ) {
     try {
       const token = req.headers.authorization.split(" ")[1];
@@ -17,7 +17,7 @@ export const authGuard = async (req, res, next) => {
       next(err);
     }
   } else {
-    const error = new Error("Not authorized. No taken to identify");
+    const error = new Error("Not authorized. No token to identify");
     error.statusCode = 401;
     next(error);
   }
