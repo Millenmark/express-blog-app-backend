@@ -124,7 +124,9 @@ export const updateProfilePicture = async (req, res, next) => {
     const upload = uploadImage.single("profilePicture");
     upload(req, res, async function (err) {
       if (err) {
-        const error = new Error("An error occurred when uploading");
+        const error = new Error(
+          "An error occurred when uploading" + err.message
+        );
         next(error);
       } else {
         // everything went well
