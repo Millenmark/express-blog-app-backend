@@ -1,3 +1,4 @@
+import uploadImage from "../middleware/uploadImageMiddleware.js";
 import User from "../models/User.js";
 
 export const registerUser = async (req, res, next) => {
@@ -119,6 +120,41 @@ export const updateProfile = async (req, res, next) => {
 
 export const updateProfilePicture = async (req, res, next) => {
   try {
+    const upload = uploadImage.single("profilePicture");
+    upload(req, res, async function (err) {
+      if (err) {
+        const error = new Error("An error occurred when uploading");
+        next(error);
+      } else {
+        // everything went well
+        if (req.file) {
+          const updatedUser = await User.findByIdAndUpdate(
+            req.user._id,
+            {
+              avatar: req.file.filename,
+            },
+            {
+              new: true,
+            }
+          );
+          res.json({
+            _id: updatedUser._id,
+            avatar: updatedUser.avatar,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isVerified: updatedUser.isVerified,
+            isAdmin: updatedUser.isAdmin,
+            token: await updatedUser.generateJWT(),
+          });
+        } else {
+          let filename;
+          let updatedUser = await User.findById(req.user._id);
+          filename = updatedUser.avatar;
+          updatedUser.avatar = "";
+          await updatedUser.save();
+        }
+      }
+    });
   } catch (error) {
     next(error);
   }
