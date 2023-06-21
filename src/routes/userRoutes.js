@@ -16,6 +16,6 @@ userRoute.post("/register", registerUser);
 userRoute.post("/login", loginUser);
 userRoute.get("/profile", authGuard, userProfile);
 userRoute.put("/updateProfile", authGuard, updateProfile);
-userProfile.put("/updateProfilePicture", authGuard, updateProfilePicture);
+userRoute.put("/updateProfilePicture", authGuard, updateProfilePicture);
 
 export default userRoute;
