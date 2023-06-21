@@ -116,3 +116,10 @@ export const updateProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateProfilePicture = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+};
