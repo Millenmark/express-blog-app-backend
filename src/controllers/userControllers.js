@@ -154,6 +154,15 @@ export const updateProfilePicture = async (req, res, next) => {
           updatedUser.avatar = "";
           await updatedUser.save();
           fileRemover(filename);
+          res.json({
+            _id: updatedUser._id,
+            avatar: updatedUser.avatar,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isVerified: updatedUser.isVerified,
+            isAdmin: updatedUser.isAdmin,
+            token: await updatedUser.generateJWT(),
+          });
         }
       }
     });
