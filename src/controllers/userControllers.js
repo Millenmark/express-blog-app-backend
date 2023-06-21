@@ -83,3 +83,36 @@ export const userProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateProfile = async (req, res, next) => {
+  try {
+    let user = await User.findById(req.user._id);
+
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    if (req.body.password && req.body.password.length < 6) {
+      throw new Error("Password length must be at least 6 character");
+    } else if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUserProfile = await user.save();
+
+    res.json({
+      _id: updatedUserProfile._id,
+      avatar: updatedUserProfile.avatar,
+      name: updatedUserProfile.name,
+      email: updatedUserProfile.email,
+      isVerified: updatedUserProfile.isVerified,
+      isAdmin: updatedUserProfile.isAdmin,
+      token: await updatedUserProfile.generateJWT(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
