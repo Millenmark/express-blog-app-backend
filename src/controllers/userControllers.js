@@ -1,5 +1,6 @@
 import uploadImage from "../middleware/uploadImageMiddleware.js";
 import User from "../models/User.js";
+import fileRemover from "../utils/fileRemover.js";
 
 export const registerUser = async (req, res, next) => {
   try {
@@ -152,6 +153,7 @@ export const updateProfilePicture = async (req, res, next) => {
           filename = updatedUser.avatar;
           updatedUser.avatar = "";
           await updatedUser.save();
+          fileRemover(filename);
         }
       }
     });
