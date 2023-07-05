@@ -18,6 +18,12 @@ const CommentSchema = new Schema(
   }
 );
 
+CommentSchema.virtual("replies", {
+  ref: "comment",
+  localField: "_id",
+  foreignField: "parent",
+});
+
 const Comment = model("comment", CommentSchema);
 
 export default Comment;
