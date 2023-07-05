@@ -2,14 +2,16 @@ import { Schema, model } from "mongoose";
 
 const CommentSchema = new Schema(
   {
-    title: { type: String, required: true },
-    caption: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
-    body: { type: Object, required: true },
-    photo: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: "user" },
-    tags: { type: [String] },
-    categories: [{ type: Schema.Types.ObjectId, ref: "postCategory" }],
+    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    description: { type: String, required: true },
+    postId: { type: Schema.Types.ObjectId, ref: "post" },
+    check: { type: Boolean, default: false },
+    parent: {
+      type: Schema.Types.ObjectId,
+      ref: "comment",
+      default: null,
+    },
+    replyOnUser: { type: Schema.Types.ObjectId, ref: "user", default: null },
   },
   {
     timestamps: true,
